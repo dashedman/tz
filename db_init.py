@@ -4,6 +4,25 @@ from sqlalchemy import create_engine, text
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
+# getting declarative class
+Base = declarative_base()
+
+class Data_Collection(Base):
+    __tablename__ = 'collected_data'
+
+    id = Column(Integer, nullable=False, primary_key=True)
+    data_type = Column(String)
+    description = Column(String)
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, nullable=False, primary_key=True)
+    login = Column(String, nullable=False, unique=True)
+    password = Column(String, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=text('now()'))
+    last_request = Column(DateTime)
+
 def main():
     # read the configs
     with open("config.yaml", "r") as f:
@@ -13,25 +32,6 @@ def main():
     db_url = f"postgresql://{conf['db']['user']}:{conf['db']['password']}@{conf['db']['host']}:{conf['db']['port']}/{conf['db']['name']}"
     print(f"Connection to {db_url}")
     db_engine = create_engine(db_url)
-
-    # getting declarative class
-    Base = declarative_base()
-
-    class Data_Collection(Base):
-        __tablename__ = 'collected_data'
-
-        id = Column(Integer, nullable=False, primary_key=True)
-        data_type = Column(String)
-        description = Column(String)
-
-    class Users(Base):
-        __tablename__ = 'users'
-
-        id = Column(Integer, nullable=False, primary_key=True)
-        login = Column(String, nullable=False, unique=True)
-        password = Column(String, nullable=False)
-        created_at = Column(DateTime, nullable=False, default=text('now()'))
-        last_request = Column(DateTime)
 
     # create the tables
     Base.metadata.create_all(db_engine)
