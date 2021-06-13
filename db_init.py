@@ -1,8 +1,11 @@
+import typing
+
 import yaml
 
 from sqlalchemy import create_engine, text
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.future import Engine
 
 # getting declarative class
 Base = declarative_base()
@@ -12,6 +15,7 @@ class Data_Collection(Base):
     id = Column(Integer, nullable=False, primary_key=True)
     data_type = Column(String)
     description = Column(String)
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -26,48 +30,18 @@ class User(Base):
         return f"<User: id={self.id} login={self.login} password={self.password}>"
 
 
-def main():
+def main() -> None:
     # read the configs
     with open("config.yaml", "r") as f:
-        conf = yaml.safe_load(f)
+        conf: typing.Dict[str, typing.Any] = yaml.safe_load(f)
 
     #create engine
-    db_url = f"postgresql://{conf['db']['user']}:{conf['db']['password']}@{conf['db']['host']}:{conf['db']['port']}/{conf['db']['name']}"
+    db_url: str = f"postgresql://{conf['db']['user']}:{conf['db']['password']}@{conf['db']['host']}:{conf['db']['port']}/{conf['db']['name']}"
     print(f"Connection to {db_url}")
-    db_engine = create_engine(db_url)
+    db_engine: Engine = create_engine(db_url)
 
     # create the tables
     Base.metadata.create_all(db_engine)
-    print("Tables created.")
-
-
-def _old_main():
-    # read the configs
-    with open("config.yaml", "r") as f:
-        conf = yaml.safe_load(f)
-
-    db_url = f"postgresql://{conf['db']['user']}:{conf['db']['password']}@{conf['db']['host']}:{conf['db']['port']}/{conf['db']['name']}"
-    print(f"Connection to {db_url}")
-    db_engine = create_engine(db_url)
-
-    with db_engine.connect() as conn:
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS collected_data (
-                id          Int     NOT NULL PRIMARY KEY,
-                data_type   Char    ,
-                description Text
-            )
-        """)
-        conn.execute(text("""
-            CREATE TABLE IF NOT EXISTS users (
-                id              Int         NOT NULL PRIMARY KEY,
-                login           Char        NOT NULL UNIQUE,
-                password        Char        NOT NULL,
-                created_at      timestamp   NOT NULL DEFAULT now(),
-                last_request    timestamp
-            )
-        """))
-
     print("Tables created.")
 
 if __name__ == "__main__":
