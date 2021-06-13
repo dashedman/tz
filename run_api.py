@@ -36,7 +36,8 @@ def main():
                     </form>
                 </body></html>""")
             else:
-                self.write(f"Hello, {user.decode('utf-8')}!")
+                # cute json 200 answer
+                self.write({"Hello": user.decode('utf-8')})
 
         def post(self):
             login = self.get_argument("login")
@@ -59,7 +60,7 @@ def main():
 
             print(login)
             self.set_secure_cookie("user", login)
-            self.write(f"Hello, {login}!")
+            self.write({"Hello": login})    #cute json 200 answer
 
     class DataHandler(tornado.web.RequestHandler):
         def get(self):
@@ -68,12 +69,14 @@ def main():
                 self.send_error(401)
                 return
 
+            # select datas from DB
             data_coll = db_session.execute(select(Data_Collection)).all()
             dc_json = {"data": [], "total": len(data_coll)}
             for it, row in enumerate(data_coll):
                 data = row[0]
                 dc_json["data"].append({"id": data.id, "data_type": data.data_type, "description": data.description})
 
+            # send datas
             self.write(dc_json)
 
     #web app initialization

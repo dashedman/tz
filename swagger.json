@@ -1,0 +1,118 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "-1.0.0",
+    "title": "MySQL String Data Types"
+  },
+  "paths": {
+    "/api/data": {
+      "get": {
+        "summary": "Getting data in json",
+        "description": "Return the info about SQL String Data Types in json format: `{'data':[DataUnit, ...], 'total': totalNum}`",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "data_type": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "get": {
+        "summary": "Authorisation",
+        "description": "Getting authorisation page",
+        "responses": {
+          "200": {
+            "description": "Successful authorisation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Hello": {
+                      "type": "string",
+                      "example": "pog"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Authorisation",
+        "description": "Sending authorisation data",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "login": {
+                    "type": "string",
+                    "example": "pog"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "0000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful authorisation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Hello": {
+                      "type": "string",
+                      "example": "pog"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad authorisation"
+          }
+        }
+      }
+    }
+  }
+}
