@@ -6,7 +6,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 # getting declarative class
 Base = declarative_base()
-
 class Data_Collection(Base):
     __tablename__ = 'collected_data'
 
@@ -20,8 +19,12 @@ class User(Base):
     id = Column(Integer, nullable=False, primary_key=True)
     login = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=text('now()'))
+    created_at = Column(DateTime, nullable=False, server_default=text('now()'))
     last_request = Column(DateTime)
+
+    def __str__(self):
+        return f"<User: id={self.id} login={self.login} password={self.password}>"
+
 
 def main():
     # read the configs

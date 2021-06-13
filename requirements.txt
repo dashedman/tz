@@ -3,3 +3,5 @@ sqlalchemy
 psycopg2
 requests
 beautifulsoup4
+prettytable
+tornado

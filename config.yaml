@@ -6,4 +6,7 @@ db:
     host: localhost
     port: 5432
 
+web_app:
+    port: 80
+    
 scrap_url: https://websitesetup.org/sql-cheat-sheet/
