@@ -8,7 +8,7 @@
 1. Install python 3.8+
 2. Install modules listed in requirements.txt
 `> python3.8 -m pip install -r requirements.txt`
-3. Write to config valid data
+3. Set in config valid data
 4. Run db_init.py script
 5. Run run_scraper.py script
 6. Run run_api.py script
