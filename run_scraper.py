@@ -38,7 +38,8 @@ def main() -> None:
         conf: typing.Dict[str, typing.Any] = yaml.safe_load(f)
 
     print("Parsing tables...")
-    response: requests.Response = requests.get(conf['scrap_url'])
+    scrap_url: str = "https://websitesetup.org/sql-cheat-sheet/"
+    response: requests.Response = requests.get(scrap_url)
     soup = BeautifulSoup(response.text, "html.parser")
     tables: typing.List[Tag] = soup.find_all('table')
 

@@ -2,11 +2,9 @@ db:
     name: tiny
 
     user: pog
-    password: !!str 0000
+    password: "0000"
     host: localhost
     port: 5432
 
 web_app:
     port: 80
-    
-scrap_url: https://websitesetup.org/sql-cheat-sheet/
